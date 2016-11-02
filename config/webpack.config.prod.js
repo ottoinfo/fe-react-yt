@@ -55,7 +55,8 @@ module.exports = {
   // In production, we only want to load the polyfills and the app code.
   entry: [
     require.resolve('./polyfills'),
-    paths.appIndexJs
+    paths.appIndexJs,
+    path.join(paths.appAssets, "css", "style.scss")
   ],
   output: {
     // The build folder.
@@ -104,6 +105,24 @@ module.exports = {
         include: paths.appSrc,
         loader: 'babel',
         
+      },
+      // CUSTOM OVERRIDES
+      // DEFAULT STYLES
+      {
+        include: paths.appAssets,
+        loader: "style!css!postcss!sass?outputStyle=expanded",
+        test: /\.scss$/,
+      },
+      // CSS MODULES - SASS RESOURCES for IMPORTING MIXINS & VARIABLES
+      {
+        include: paths.appSrc,
+        loader: "style!" +
+          "css" + "?modules&importLoaders=1&localIdentName=[folder]_[name]_[local]_[hash:base64:5]" + "!" +
+          "postcss!" +
+          "sass?outputStyle=expanded&includePaths[]=true!" +
+          "sass-resources"
+        ,
+        test: /\.scss$/,
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
@@ -234,5 +253,9 @@ module.exports = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty'
-  }
+  },
+  sassResources: [
+    path.join(paths.appAssets, "css", "_mixins.scss"),
+    path.join(paths.appAssets, "css", "_variables.scss")
+  ],
 };

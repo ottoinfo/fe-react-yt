@@ -6,6 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/ottoinfo/fe-react-yt.git"
   },
+  "homepage": "http://ottoinfo.github.io/fe-react-yt",
   "author": "Matthew Otto <matt@ottoinfo.com> (http://ottoinfo.com/)",
   "devDependencies": {
     "autoprefixer": "6.5.1",
@@ -67,6 +68,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "deploy": "npm run build&&gh-pages -d build",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
