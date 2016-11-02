@@ -19,10 +19,10 @@ EX: Clicking the "Views" heading should sort by views ascending. Clicking it aga
 Adding Loaders
 --------------
 
-Wanted to add custom loaders for SASS and CSS MODULES
+Wanted to add custom loaders for SASS and CSS MODULES & Numeral for formatting dates and numbers
 
 ```
-npm i --save-dev extract-text-webpack-plugin sass-resources-loader sass-loader node-sass
+npm i --save-dev extract-text-webpack-plugin sass-resources-loader sass-loader node-sass numeral
 ```
 
 ```

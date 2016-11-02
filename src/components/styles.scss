@@ -4,30 +4,49 @@
   font-size: 1.5em;
 }
 
-.empty {
-  padding: 2px 10px;
-}
-
-.list {
-  display: inline-block;
-  p {
-    margin: 5px;
-  }
-}
-
-.item {
-  font-size: 0.625em;
-  color: $shade8;
-  &:before {
-    content: "•";
-    display: inline-block;
-    margin-right: 10px;
-  }
+.channel {
+  border: $border;
 }
 
 .search {
   padding: 0 10px;
   label {
     margin-right: 5px;
+  }
+}
+
+.thead {
+  border: $border;
+  th {
+    padding: 3px 30px;
+    border: $border;
+    cursor: pointer;
+  }
+}
+
+.th_title {
+  text-align: left;
+}
+
+.th_view {}
+
+.th_created {}
+
+.row {
+
+}
+
+.td {
+  border: $border;
+  text-align: center;
+  padding: 20px;
+}
+
+.channel_info {
+  text-align: left;
+  @include flex_layout();
+  @include flex_items($margin: auto 10px);
+  img {
+    border: $border;
   }
 }

@@ -52,8 +52,10 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "numeral": "^1.5.3",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "superagent": "^2.3.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
