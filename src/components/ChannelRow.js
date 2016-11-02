@@ -29,10 +29,14 @@ export default class ChannelRow extends Component {
   render() {
     const { channel } = this.props
 
+    if (!channel.show) { 
+      return null
+    }
+
     return (
       <tr className={styles.row}>
         <td className={styles.td}>
-          <p className={!channel.favorite ? `${styles.favorite}` : `${styles.favorite_true}`} onClick={()=> this.props.handleFavorite(channel.id) }>*</p>
+          <p className={!channel.favorite ? `${styles.favorite}` : `${styles.favorite_true}`} onClick={()=> this.props.handleFavorite(channel.id) }></p>
         </td>
 
         <td className={styles.td}>
@@ -40,7 +44,8 @@ export default class ChannelRow extends Component {
             <img src={channel.thumb_url_default} alt={channel.title}/>
             
             <div className={styles.info}>
-              <p>{channel.title}</p>
+              <p className={styles.channel_title}>{channel.title}</p>
+              <p className={styles.channel_id}>ID: {channel.id}</p>
               <a href={`https://www.youtube.com/${channel.title}`}>View Channel</a>
             </div>
           </div>

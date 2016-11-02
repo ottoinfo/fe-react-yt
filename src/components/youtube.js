@@ -11,6 +11,7 @@ export default class YouTube extends Component {
     sort: 'title', 
     asc: true,
     channels: [],
+    search: "",
   }
 
   constructor(props) {
@@ -35,19 +36,15 @@ export default class YouTube extends Component {
         new Error("Error Fetching Channels: " + err)
       }
       else {
-        let data = res.body.channels
-        data.map(channel=> Object.assign({favorite: false, show: true}, channel)) // Add Favorite ATTR
-        this.setState({ channels: data })
+        let channels = res.body.channels
+        channels.map(channel=> Object.assign(channel, {favorite: false, show: true})) // Add Favorite ATTR
+        this.setState({channels})
       }
     })
   }
 
-  handleSearch = (val)=> {
-    console.log({val})
-    this.state.channels.map(item => {
-      this.fuse.list = [item]
-      this.fuse.search(this.search).length ? item.show = true : item.show = false
-    })
+  handleSearch = (search)=> {
+    this.setState({search})
   }
 
   handleSortBy = (sort)=> {
@@ -77,6 +74,9 @@ export default class YouTube extends Component {
       case "created_on":
         channels.sort((a,b)=> new Date(a.created_on).getTime() - new Date(b.created_on).getTime() )
         break
+      case "favorite":
+        channels.sort((a,b)=> a.favorite - b.favorite )
+        break
       default: // title
         channels.sort((a,b)=> {
           if(a.title.toLowerCase() < b.title.toLowerCase()) {return -1}
@@ -94,6 +94,16 @@ export default class YouTube extends Component {
 
   render() {
     const channels = this.sortColumns(this.state.channels)
+    if (this.state.search.length) {
+      channels.map(item=> {
+        this.fuse.list = [item]
+        this.fuse.search(this.state.search).length ? item.show = true : item.show = false
+        return item
+      })
+    }
+    else {
+      channels.map(item=> item.show = true )
+    }
 
     return (
       <div className="content">
