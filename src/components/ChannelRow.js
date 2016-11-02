@@ -6,6 +6,7 @@ export default class ChannelRow extends Component {
 
   static propTypes = {
     channel: React.PropTypes.object,
+    handleFavorite: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -18,14 +19,30 @@ export default class ChannelRow extends Component {
     }
   }
 
+  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+  formattedDate = (val) => {
+    const date = new Date(val)
+    return `${this.months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+  }
+
   render() {
     const { channel } = this.props
+
     return (
       <tr className={styles.row}>
         <td className={styles.td}>
+          <p className={!channel.favorite ? `${styles.favorite}` : `${styles.favorite_true}`} onClick={()=> this.props.handleFavorite(channel.id) }>*</p>
+        </td>
+
+        <td className={styles.td}>
           <div className={styles.channel_info}>
-            <img src={channel.thumb_url_default} alt={channel.title}/> 
-            <p>{channel.title}</p>
+            <img src={channel.thumb_url_default} alt={channel.title}/>
+            
+            <div className={styles.info}>
+              <p>{channel.title}</p>
+              <a href={`https://www.youtube.com/${channel.title}`}>View Channel</a>
+            </div>
           </div>
         </td>
         
@@ -34,7 +51,7 @@ export default class ChannelRow extends Component {
         </td>
         
         <td className={styles.td}>
-          <p>{numeral(channel.created_on).format('00:00:00')}</p>
+          <p>{this.formattedDate(channel.created_on)}</p>
         </td>
       </tr>
     )

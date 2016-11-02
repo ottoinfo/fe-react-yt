@@ -52,6 +52,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "fuse.js": "^2.5.0",
     "numeral": "^1.5.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",

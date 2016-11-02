@@ -1,8 +1,9 @@
 import React, { Component } from "react"
+import Fuse from "fuse.js"
 import Api from "../services/Api"
+import Search from "./Search"
 import ChannelHeader from "./ChannelHeader"
 import ChannelRow from "./ChannelRow"
-import styles from "./styles.scss"
 
 export default class YouTube extends Component {
 
@@ -18,6 +19,12 @@ export default class YouTube extends Component {
   }
 
   componentDidMount = function(){
+    this.fuse = new Fuse(null, {
+      caseSensitive: false,
+      threshold: 0.2,
+      maxPatternLength: 32,
+      keys: ["title", "id"],
+    })
     this.fetchChannels()
   }
 
@@ -28,8 +35,18 @@ export default class YouTube extends Component {
         new Error("Error Fetching Channels: " + err)
       }
       else {
-        this.setState({ channels: res.body.channels })
+        let data = res.body.channels
+        data.map(channel=> Object.assign({favorite: false, show: true}, channel)) // Add Favorite ATTR
+        this.setState({ channels: data })
       }
+    })
+  }
+
+  handleSearch = (val)=> {
+    console.log({val})
+    this.state.channels.map(item => {
+      this.fuse.list = [item]
+      this.fuse.search(this.search).length ? item.show = true : item.show = false
     })
   }
 
@@ -38,8 +55,17 @@ export default class YouTube extends Component {
     if (update.sort === this.state.sort) {
       update.asc = !this.state.asc // TRUE || FALSE for ASC || DESC
     }
-    console.log("state", this.state)
     this.setState(Object.assign({}, this.state, update))
+  }
+
+  handleFavorite = (id)=> {
+    const update = this.state.channels.map(item=> {
+      if (item.id !== id) {
+        return item // Leave Alone
+      }
+      return Object.assign({}, item, { favorite: !item.favorite }) // Update
+    })
+    this.setState(Object.assign({}, {channels: update}))
   }
 
   sortColumns = (data)=> {
@@ -49,7 +75,7 @@ export default class YouTube extends Component {
         channels.sort((a,b)=> a.views - b.views )
         break
       case "created_on":
-        channels.sort()
+        channels.sort((a,b)=> new Date(a.created_on).getTime() - new Date(b.created_on).getTime() )
         break
       default: // title
         channels.sort((a,b)=> {
@@ -71,16 +97,14 @@ export default class YouTube extends Component {
 
     return (
       <div className="content">
-        <div className={styles.search}>
-
-        </div>
+        <Search handleSearch={this.handleSearch} />
 
         <table className="content">
           <ChannelHeader sortBy={this.handleSortBy} />
 
           <tbody>
           { channels.map(channel=>
-            <ChannelRow key={channel.id} channel={channel} />
+            <ChannelRow key={channel.id} channel={channel} handleFavorite={this.handleFavorite} />
           ) }
           </tbody>
         </table>

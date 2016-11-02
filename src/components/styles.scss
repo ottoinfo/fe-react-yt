@@ -9,9 +9,14 @@
 }
 
 .search {
-  padding: 0 10px;
-  label {
+  margin: 0 0 20px;
+  input {
+    padding: 5px 10px;
+    border-radius: 10px;
     margin-right: 5px;
+    &:hover, &:focus {
+      outline: none;
+    }
   }
 }
 
@@ -26,6 +31,7 @@
 
 .th_title {
   text-align: left;
+  width: 100%;
 }
 
 .th_view {}
@@ -33,12 +39,31 @@
 .th_created {}
 
 .row {
-
+  .favorite {
+    content: "-";
+    display: inline-block;
+    padding: 20px;
+    &.selected {
+      content: "+";
+    }
+  }
 }
 
 .td {
   border: $border;
   text-align: center;
+  padding: 20px;
+}
+
+.favorite {
+  content: "-";
+  display: inline-block;
+  padding: 20px;
+}
+
+.favorite_true {
+  content: "+";
+  display: inline-block;
   padding: 20px;
 }
 
